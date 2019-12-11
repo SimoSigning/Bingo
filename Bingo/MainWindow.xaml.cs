@@ -71,7 +71,7 @@ namespace Bingo
         }
         private void GenererPlade_Click(object sender, RoutedEventArgs e)
         {
-            if(HasGeneratedPlade == false || Bingo == true)
+            if(HasGeneratedPlade == false && Bingo == true)
             {
                 Bingo = false;
                 BingoPladeNumberList.Clear();
@@ -150,6 +150,7 @@ namespace Bingo
             {
                 BingoPladeMarkedList.Add(int.Parse(Btn1.Content.ToString()));
                 Btn1.Background = Brushes.Green;
+                HasMarkedANumber = true;
             }
         }
         private void Btn2_Click(object sender, RoutedEventArgs e)
