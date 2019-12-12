@@ -22,12 +22,14 @@ namespace Bingo
     {
         List<int> BingoNumberList = new List<int>();
         List<int> BingoPladeNumberList = new List<int>();
-        List<int> BingoPladeMarkedList = new List<int>();
+        List<bool> BingoPladeMarkedList = new List<bool>();
+        List<int> BingoPladeMarkedNumberList = new List<int>();
         bool HasGeneratedPlade = false;
         bool HarIkkeBingo = false;
         bool HasMarkedANumber = false;
         bool HasGeneratedANumber = false;
         bool Bingo = false;
+        bool[] IsPushed = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
         public MainWindow()
         {
             InitializeComponent();
@@ -71,7 +73,7 @@ namespace Bingo
         }
         private void GenererPlade_Click(object sender, RoutedEventArgs e)
         {
-            if(HasGeneratedPlade == false && Bingo == true)
+            if(HasGeneratedPlade == false || Bingo == true)
             {
                 Bingo = false;
                 BingoPladeNumberList.Clear();
@@ -84,8 +86,12 @@ namespace Bingo
                 {
                     int RanNumber = ranGen.Next(0, 100);
                     BingoPladeNumberList.Add(RanNumber);
+                    BingoPladeMarkedList.Add(false);
                     Btns[incrementer].Content = RanNumber;
                     incrementer++;
+                    /*Det er her alle tal der ligger på pladen sættes ind. Muligvis skal man også lave knap association her. Det kan gøres via multidimensionel array eller bare 2 arrays.
+                     fordi den looper knapperne kronologisk og tallene loades ind i samme kronologiske rækkefølge, vil knap og tal følges ad i et loop.
+                     Det betyder at når man laver en ændring i et index fundet i et array, kan man lave en ændring på et index der er svarende til i det andet array.*/
                 }
             }
             else
@@ -96,16 +102,16 @@ namespace Bingo
         }
         private void BingoBtn_Click(object sender, RoutedEventArgs e)
         {
-            if(HasMarkedANumber == true && HasGeneratedPlade == true && HasGeneratedANumber == true)
+            if (HasMarkedANumber == true && HasGeneratedPlade == true && HasGeneratedANumber == true && BingoPladeNumberList.Count == BingoPladeMarkedList.Count)
             {
-                for (int i = 0; i < BingoPladeMarkedList.Count; i++)
+      /*          for (int i = 0; i < BingoPladeMarkedList.Count; i++)
                 {
                     if(!BingoNumberList.Contains(BingoPladeMarkedList[i]))
                     {
                         HarIkkeBingo = true;
                         break;
                     }
-                }
+                }*/
                 if(HarIkkeBingo == true)
                 {
                     InfoLabel.Content = "Du har ikke bingo";
@@ -144,20 +150,67 @@ namespace Bingo
             Btn18.Background = Brushes.Gray;
         }
         //vi skal i høj grad finde en måde at gøre det smartere på m.h.t at lave bingoplade med buttons.
+        //Endnu et eksempel på dette kommer med at kunne fjerne markering. Det kan meget simpelt gøres med en boolean men det bliver 18 bools o_O.
+        /*
+         Eventuelt kan man lave en klasse som har properties for hver knap der fortæller om knappen er marked eller ej.
+
+            funktionaliteten er at når en knap er marked, er knappens værdi i markedlist listen når den ikke er marked skal den ikke være i listen.
+            Hvis et tal eksistere på flere knapper, så vil arrayet være fyldt med flere af samme tal, så når man fjerner dette tal fra arrayet vil det
+            ikke kun være tallet der tilhøre knappen men det ene tal der er på alle knapper.
+            Den skal kunne opfatte hvilken knap tallet der skal fjernes er associeret med.
+             */
         private void Btn1_Click(object sender, RoutedEventArgs e)
         {
             if(HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn1.Content.ToString()));
-                Btn1.Background = Brushes.Green;
+                
+                if(IsPushed[0] == false)
+                {
+                    IsPushed[0] = true;
+                    Btn1.Background = Brushes.Green;
+                }
+                else
+                {
+                    IsPushed[0] = false;
+                    Btn1.Background = Brushes.Gray;
+                    //følgende fremgangsmåde vil dog kun virke hvis alle tal er unikke og ikke kan gentages.
+                }
                 HasMarkedANumber = true;
             }
         }
+        /*    
+         int VareAntal = int.Parse(AntalOrdre.Text);
+            object[] VarerDescObjects = new object[VareAntal];
+            object[] VarerAntalObject = new object[VareAntal];
+            string[] getAllVareDescriptions = new string[VareAntal];
+            int[] getAllVareAntal = new int[VareAntal];
+            for (int i = 0; i < VarerDescObjects.Length; i++)
+            {
+                string CurrVare = "Varer0" + i.ToString();
+                string CurrAntal = "Antal0" + i.ToString();
+                VarerDescObjects[i] = this.FindName(CurrVare);
+                VarerAntalObject[i] = this.FindName(CurrAntal);
+                if(VarerDescObjects[i].GetType() == typeof(TextBox))
+                {
+                    getAllVareDescriptions[i] = ((TextBox)VarerDescObjects[i]).Text;
+                }
+                if(VarerAntalObject[i].GetType() == typeof(TextBox))
+                {
+                    try
+                    {
+                        getAllVareAntal[i] = int.Parse(((TextBox)VarerAntalObject[i]).Text);
+                    }
+                    catch
+                    {
+                        IndtastVareErrorLabel.Content = "Antal kan kun være heltal";
+                    }
+                }
+            } 
+        */
         private void Btn2_Click(object sender, RoutedEventArgs e)
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn2.Content.ToString()));
                 Btn2.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -166,7 +219,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn3.Content.ToString()));
                 Btn3.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -175,7 +227,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn4.Content.ToString()));
                 Btn4.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -185,7 +236,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn5.Content.ToString()));
                 Btn5.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -194,7 +244,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn6.Content.ToString()));
                 Btn6.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -203,7 +252,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn7.Content.ToString()));
                 Btn7.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -212,7 +260,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn8.Content.ToString()));
                 Btn8.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -221,7 +268,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn9.Content.ToString()));
                 Btn9.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -230,7 +276,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn10.Content.ToString()));
                 Btn10.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -239,7 +284,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn11.Content.ToString()));
                 Btn11.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -248,7 +292,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn12.Content.ToString()));
                 Btn12.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -257,7 +300,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn13.Content.ToString()));
                 Btn13.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -266,7 +308,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn14.Content.ToString()));
                 Btn14.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -275,7 +316,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn15.Content.ToString()));
                 Btn15.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -284,7 +324,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn16.Content.ToString()));
                 Btn16.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -293,7 +332,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn17.Content.ToString()));
                 Btn17.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -302,7 +340,6 @@ namespace Bingo
         {
             if (HasGeneratedPlade == true)
             {
-                BingoPladeMarkedList.Add(int.Parse(Btn18.Content.ToString()));
                 Btn18.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
