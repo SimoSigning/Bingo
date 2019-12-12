@@ -30,9 +30,15 @@ namespace Bingo
         bool HasGeneratedANumber = false;
         bool Bingo = false;
         bool[] IsPushed = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
+        List<Button> Btns = new List<Button>();
         public MainWindow()
         {
             InitializeComponent();
+            Button[] BtnArr = { Btn1, Btn2, Btn3, Btn4, Btn5, Btn6, Btn7, Btn8, Btn9, Btn10, Btn11, Btn12, Btn13, Btn14, Btn15, Btn16, Btn17, Btn18 };
+            for (int i = 0; i < BtnArr.Length; i++)
+            {
+                Btns.Add(BtnArr[i]);
+            }
         }
         private void NumberGenerator_Click(object sender, RoutedEventArgs e)
         {
@@ -80,7 +86,6 @@ namespace Bingo
                 HasGeneratedPlade = true;
                 ResetColors();
                 Random ranGen = new Random();
-                List<Button> Btns = new List<Button>() {Btn1, Btn2, Btn3, Btn4, Btn5, Btn6, Btn7, Btn8, Btn9, Btn10,  Btn11, Btn12, Btn13, Btn14, Btn15, Btn16, Btn17, Btn18 };
                 int incrementer = 0;
                 while(incrementer < Btns.Count)
                 {
@@ -161,56 +166,23 @@ namespace Bingo
              */
         private void Btn1_Click(object sender, RoutedEventArgs e)
         {
+
             if(HasGeneratedPlade == true)
             {
-                
-                if(IsPushed[0] == false)
+                if(BingoPladeMarkedList[0] == false)
                 {
-                    IsPushed[0] = true;
                     Btn1.Background = Brushes.Green;
+                    BingoPladeMarkedList[0] = true;
+                    BingoPladeMarkedNumberList[0] = 
+                    HasMarkedANumber = true;
                 }
-                else
-                {
-                    IsPushed[0] = false;
-                    Btn1.Background = Brushes.Gray;
-                    //følgende fremgangsmåde vil dog kun virke hvis alle tal er unikke og ikke kan gentages.
-                }
-                HasMarkedANumber = true;
             }
         }
-        /*    
-         int VareAntal = int.Parse(AntalOrdre.Text);
-            object[] VarerDescObjects = new object[VareAntal];
-            object[] VarerAntalObject = new object[VareAntal];
-            string[] getAllVareDescriptions = new string[VareAntal];
-            int[] getAllVareAntal = new int[VareAntal];
-            for (int i = 0; i < VarerDescObjects.Length; i++)
-            {
-                string CurrVare = "Varer0" + i.ToString();
-                string CurrAntal = "Antal0" + i.ToString();
-                VarerDescObjects[i] = this.FindName(CurrVare);
-                VarerAntalObject[i] = this.FindName(CurrAntal);
-                if(VarerDescObjects[i].GetType() == typeof(TextBox))
-                {
-                    getAllVareDescriptions[i] = ((TextBox)VarerDescObjects[i]).Text;
-                }
-                if(VarerAntalObject[i].GetType() == typeof(TextBox))
-                {
-                    try
-                    {
-                        getAllVareAntal[i] = int.Parse(((TextBox)VarerAntalObject[i]).Text);
-                    }
-                    catch
-                    {
-                        IndtastVareErrorLabel.Content = "Antal kan kun være heltal";
-                    }
-                }
-            } 
-        */
         private void Btn2_Click(object sender, RoutedEventArgs e)
         {
             if (HasGeneratedPlade == true)
             {
+
                 Btn2.Background = Brushes.Green;
                 HasMarkedANumber = true;
             }
@@ -346,3 +318,33 @@ namespace Bingo
         }
     }
 }
+
+/*    
+ int VareAntal = int.Parse(AntalOrdre.Text);
+    object[] VarerDescObjects = new object[VareAntal];
+    object[] VarerAntalObject = new object[VareAntal];
+    string[] getAllVareDescriptions = new string[VareAntal];
+    int[] getAllVareAntal = new int[VareAntal];
+    for (int i = 0; i < VarerDescObjects.Length; i++)
+    {
+        string CurrVare = "Varer0" + i.ToString();
+        string CurrAntal = "Antal0" + i.ToString();
+        VarerDescObjects[i] = this.FindName(CurrVare);
+        VarerAntalObject[i] = this.FindName(CurrAntal);
+        if(VarerDescObjects[i].GetType() == typeof(TextBox))
+        {
+            getAllVareDescriptions[i] = ((TextBox)VarerDescObjects[i]).Text;
+        }
+        if(VarerAntalObject[i].GetType() == typeof(TextBox))
+        {
+            try
+            {
+                getAllVareAntal[i] = int.Parse(((TextBox)VarerAntalObject[i]).Text);
+            }
+            catch
+            {
+                IndtastVareErrorLabel.Content = "Antal kan kun være heltal";
+            }
+        }
+    } 
+*/
