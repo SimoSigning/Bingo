@@ -23,13 +23,10 @@ namespace Bingo
         List<int> BingoNumberList = new List<int>();
         List<int> BingoPladeNumberList = new List<int>();
         List<bool> BingoPladeMarkedList = new List<bool>();
-        List<int> BingoPladeMarkedNumberList = new List<int>();
         bool HasGeneratedPlade = false;
         bool HarIkkeBingo = false;
-        bool HasMarkedANumber = false;
+        bool AllNumbersMarked = true;
         bool HasGeneratedANumber = false;
-        bool Bingo = false;
-        bool[] IsPushed = { false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false };
         List<Button> Btns = new List<Button>();
         public MainWindow()
         {
@@ -58,7 +55,15 @@ namespace Bingo
                         }
                     }
                     while (AlreadyHasNumber == true);
+                    //den markerede ikke 68 da 68 var det første tal.. 
                     BingoNumberList.Add(GeneratedNumber);
+                    for (int i = 0; i < Btns.Count; i++)
+                    {
+                        if(Btns[i].Content.ToString() == BingoNumberList[BingoNumberList.Count-1].ToString())
+                        {
+                            ButtonClickFunc(Btns[i], i);
+                        }
+                    }
                     HasGeneratedANumber = true;
                     NumberList.Items.Clear();
                     for (int i = 0; i < BingoNumberList.Count; i++)
@@ -79,9 +84,8 @@ namespace Bingo
         }
         private void GenererPlade_Click(object sender, RoutedEventArgs e)
         {
-            if(HasGeneratedPlade == false || Bingo == true)
+            if(HasGeneratedPlade == false)
             {
-                Bingo = false;
                 BingoPladeNumberList.Clear();
                 HasGeneratedPlade = true;
                 ResetColors();
@@ -94,29 +98,26 @@ namespace Bingo
                     BingoPladeMarkedList.Add(false);
                     Btns[incrementer].Content = RanNumber;
                     incrementer++;
-                    /*Det er her alle tal der ligger på pladen sættes ind. Muligvis skal man også lave knap association her. Det kan gøres via multidimensionel array eller bare 2 arrays.
-                     fordi den looper knapperne kronologisk og tallene loades ind i samme kronologiske rækkefølge, vil knap og tal følges ad i et loop.
-                     Det betyder at når man laver en ændring i et index fundet i et array, kan man lave en ændring på et index der er svarende til i det andet array.*/
                 }
             }
             else
             {
                 InfoLabel.Content = "Du har allerede genereret en plade. Få bingo først.";
             }
-
         }
         private void BingoBtn_Click(object sender, RoutedEventArgs e)
         {
-            if (HasMarkedANumber == true && HasGeneratedPlade == true && HasGeneratedANumber == true && BingoPladeNumberList.Count == BingoPladeMarkedList.Count)
+            HasAMarkedNumber();
+            if (AllNumbersMarked == true && HasGeneratedPlade == true && HasGeneratedANumber == true)
             {
-      /*          for (int i = 0; i < BingoPladeMarkedList.Count; i++)
+                for (int i = 0; i < BingoPladeNumberList.Count; i++)
                 {
-                    if(!BingoNumberList.Contains(BingoPladeMarkedList[i]))
+                    if(!BingoNumberList.Contains(BingoPladeNumberList[i]))
                     {
                         HarIkkeBingo = true;
                         break;
                     }
-                }*/
+                }
                 if(HarIkkeBingo == true)
                 {
                     InfoLabel.Content = "Du har ikke bingo";
@@ -125,13 +126,121 @@ namespace Bingo
                 else
                 {
                     InfoLabel.Content = "Tillykke, du har intet vundet";
-                    Bingo = true;
+                    HasGeneratedPlade = false;
                 }
             }
             else
             {
                 InfoLabel.Content = "Du kan kun have bingo hvis du faktisk spiller spillet";
             }
+        }
+        private void HasAMarkedNumber()
+        {
+            for (int i = 0; i < BingoPladeMarkedList.Count; i++)
+            {
+                if(BingoPladeMarkedList[i] == false)
+                {
+                    AllNumbersMarked = false;
+                    break;
+                }
+            }
+        }
+        private void ButtonClickFunc(Button Btn, int BtnNumber)
+        {
+            if(HasGeneratedPlade == true && HasGeneratedANumber == true)
+            {
+                if(BingoPladeMarkedList[BtnNumber] == false)
+                {
+                    Btn.Background = Brushes.Green;
+                    BingoPladeMarkedList[BtnNumber] = true;
+                }
+                else
+                {
+                    Btn.Background = Brushes.Gray;
+                    BingoPladeMarkedList[BtnNumber] = false;
+                }
+            }
+            else
+            {
+                InfoLabel.Content = "Generer en plade og et nummer";
+            }
+            DerpList.Items.Clear();
+            for (int i = 0; i < BingoPladeMarkedList.Count; i++)
+            {
+                DerpList.Items.Add(BingoPladeMarkedList[i].ToString());
+            }
+        }
+        private void Btn1_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn1, 0);
+        }
+        private void Btn2_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn2, 1);
+        }
+        private void Btn3_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn3, 2);
+        }
+        private void Btn4_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn4, 3);
+        }
+        private void Btn5_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn5, 4);
+        }
+        private void Btn6_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn6, 5);
+        }
+        private void Btn7_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn7, 6);
+        }
+        private void Btn8_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn8, 7);
+        }
+        private void Btn9_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn9, 8);
+        }
+        private void Btn10_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn10, 9);
+        }
+        private void Btn11_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn11, 10);
+        }
+        private void Btn12_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn12, 11);
+        }
+        private void Btn13_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn13, 12);
+        }
+        private void Btn14_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn14, 13);
+        }
+        private void Btn15_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn15, 14);
+        }
+        private void Btn16_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn16, 15);
+        }
+        private void Btn17_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn17, 16);
+        }
+        private void Btn18_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonClickFunc(Btn18, 17);
         }
         private void ResetColors()
         {
@@ -153,168 +262,6 @@ namespace Bingo
             Btn16.Background = Brushes.Gray;
             Btn17.Background = Brushes.Gray;
             Btn18.Background = Brushes.Gray;
-        }
-        //vi skal i høj grad finde en måde at gøre det smartere på m.h.t at lave bingoplade med buttons.
-        //Endnu et eksempel på dette kommer med at kunne fjerne markering. Det kan meget simpelt gøres med en boolean men det bliver 18 bools o_O.
-        /*
-         Eventuelt kan man lave en klasse som har properties for hver knap der fortæller om knappen er marked eller ej.
-
-            funktionaliteten er at når en knap er marked, er knappens værdi i markedlist listen når den ikke er marked skal den ikke være i listen.
-            Hvis et tal eksistere på flere knapper, så vil arrayet være fyldt med flere af samme tal, så når man fjerner dette tal fra arrayet vil det
-            ikke kun være tallet der tilhøre knappen men det ene tal der er på alle knapper.
-            Den skal kunne opfatte hvilken knap tallet der skal fjernes er associeret med.
-             */
-        private void Btn1_Click(object sender, RoutedEventArgs e)
-        {
-
-            if(HasGeneratedPlade == true)
-            {
-                if(BingoPladeMarkedList[0] == false)
-                {
-                    Btn1.Background = Brushes.Green;
-                    BingoPladeMarkedList[0] = true;
-                    BingoPladeMarkedNumberList[0] = 
-                    HasMarkedANumber = true;
-                }
-            }
-        }
-        private void Btn2_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-
-                Btn2.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn3_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn3.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn4_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn4.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-
-        private void Btn5_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn5.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn6_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn6.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn7_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn7.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn8_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn8.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn9_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn9.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn10_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn10.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn11_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn11.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn12_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn12.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn13_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn13.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn14_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn14.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn15_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn15.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn16_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn16.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn17_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn17.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
-        }
-        private void Btn18_Click(object sender, RoutedEventArgs e)
-        {
-            if (HasGeneratedPlade == true)
-            {
-                Btn18.Background = Brushes.Green;
-                HasMarkedANumber = true;
-            }
         }
     }
 }
@@ -348,3 +295,16 @@ namespace Bingo
         }
     } 
 */
+        //vi skal i høj grad finde en måde at gøre det smartere på m.h.t at lave bingoplade med buttons.
+        //Endnu et eksempel på dette kommer med at kunne fjerne markering. Det kan meget simpelt gøres med en boolean men det bliver 18 bools o_O.
+        /*
+         Eventuelt kan man lave en klasse som har properties for hver knap der fortæller om knappen er marked eller ej.
+
+            funktionaliteten er at når en knap er marked, er knappens værdi i markedlist listen når den ikke er marked skal den ikke være i listen.
+            Hvis et tal eksistere på flere knapper, så vil arrayet være fyldt med flere af samme tal, så når man fjerner dette tal fra arrayet vil det
+            ikke kun være tallet der tilhøre knappen men det ene tal der er på alle knapper.
+            Den skal kunne opfatte hvilken knap tallet der skal fjernes er associeret med.
+             */
+                                 /*Det er her alle tal der ligger på pladen sættes ind. Muligvis skal man også lave knap association her. Det kan gøres via multidimensionel array eller bare 2 arrays.
+                     fordi den looper knapperne kronologisk og tallene loades ind i samme kronologiske rækkefølge, vil knap og tal følges ad i et loop.
+                     Det betyder at når man laver en ændring i et index fundet i et array, kan man lave en ændring på et index der er svarende til i det andet array.*/

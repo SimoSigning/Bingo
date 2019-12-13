@@ -31,5 +31,6 @@
         <Button x:Name="Btn18" Content="" HorizontalAlignment="Left" Margin="400,150,0,0" VerticalAlignment="Top" Width="50" Height="50" Click="Btn18_Click"/>
         <Button x:Name="GenererPlade"  Content="Generer plade" HorizontalAlignment="Left" Margin="164,10,0,0" VerticalAlignment="Top" Width="112" Click="GenererPlade_Click" />
         <Button x:Name="BingoBtn" Content="Bingo" HorizontalAlignment="Left" Margin="319,10,0,0" VerticalAlignment="Top" Width="131" Click="BingoBtn_Click"/>
-    </Grid>
+    <ListBox x:Name="DerpList" HorizontalAlignment="Left" Height="400" Margin="476,10,0,0" VerticalAlignment="Top" Width="100"/>
+  </Grid>
 </Window>
